@@ -18,6 +18,10 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import android.Manifest
 
+// dari GPT
+import com.google.android.gms.location.ActivityRecognition
+import com.google.android.gms.location.ActivityTransitionResult
+
 
 class TrackerService : Service(), SensorEventListener {
     private val TRANSITION_RECEIVER_ACTION = "ky.paba.backgroundservice.ACTIVITY TRANSITIONS"
