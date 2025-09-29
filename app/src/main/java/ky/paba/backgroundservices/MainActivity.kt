@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val ACTION_SERVICE_STOPPED_JUMP =
-            "ky.paba.backgroundservice.ACTION_SERVICE_STOPPED JUMP"
+            "ky.paba.backgroundservice.ACTION_SERVICE_STOPPED_JUMP"
         const val REQUEST_CODE_PERMISSIONS = 101
     }
 

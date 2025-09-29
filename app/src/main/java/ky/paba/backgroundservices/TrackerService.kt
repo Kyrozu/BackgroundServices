@@ -24,7 +24,7 @@ import com.google.android.gms.location.ActivityTransitionResult
 
 
 class TrackerService : Service(), SensorEventListener {
-    private val TRANSITION_RECEIVER_ACTION = "ky.paba.backgroundservice.ACTIVITY TRANSITIONS"
+    private val TRANSITION_RECEIVER_ACTION = "ky.paba.backgroundservice.ACTIVITY_TRANSITIONS"
     private lateinit var pendingIntent: PendingIntent
     private lateinit var activityReceiver: BroadcastReceiver
     private lateinit var sensorManager: SensorManager
