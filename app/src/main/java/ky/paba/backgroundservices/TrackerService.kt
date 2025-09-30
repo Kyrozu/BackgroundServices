@@ -22,7 +22,6 @@ import android.Manifest
 import com.google.android.gms.location.ActivityRecognition
 import com.google.android.gms.location.ActivityTransitionResult
 
-
 class TrackerService : Service(), SensorEventListener {
     private val TRANSITION_RECEIVER_ACTION = "ky.paba.backgroundservice.ACTIVITY_TRANSITIONS"
     private lateinit var pendingIntent: PendingIntent
@@ -35,6 +34,32 @@ class TrackerService : Service(), SensorEventListener {
     private val NOTIFICATION_CHANNEL_ID_JUMP_DETECTED = "tracker_jump_detected"
     private val NOTIFICATION_ID_SERVICE_RUNNING = 1
     private val NOTIFICATION_ID_JUMP_DETECTED = 2
+
+    override fun onCreate() {
+        super.onCreate()
+        notificationManager = NotificationManagerCompat.from(this)
+        setupActivityRecognition()
+        setupJumpDetector()
+        Log.d("TrackerService", "Service onCreate")
+
+        // GPT
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val serviceChannel = android.app.NotificationChannel(
+                NOTIFICATION_CHANNEL_ID_SERVICE_RUNNING,
+                "Tracker Service",
+                android.app.NotificationManager.IMPORTANCE_LOW
+            )
+            val jumpChannel = android.app.NotificationChannel(
+                NOTIFICATION_CHANNEL_ID_JUMP_DETECTED,
+                "Jump Detection",
+                android.app.NotificationManager.IMPORTANCE_HIGH
+            )
+            val manager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as android.app.NotificationManager
+            manager.createNotificationChannel(serviceChannel)
+            manager.createNotificationChannel(jumpChannel)
+        }
+    }
 
     private fun setupActivityRecognition() {
         val intent = Intent(TRANSITION_RECEIVER_ACTION)
@@ -165,14 +190,6 @@ class TrackerService : Service(), SensorEventListener {
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
-
-    override fun onCreate() {
-        super.onCreate()
-        notificationManager = NotificationManagerCompat.from(this)
-        setupActivityRecognition()
-        setupJumpDetector()
-        Log.d("TrackerService", "Service onCreate")
-    }
 
     @RequiresPermission(Manifest.permission.ACTIVITY_RECOGNITION)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
